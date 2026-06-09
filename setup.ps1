@@ -129,7 +129,7 @@ function Refresh-Path {
 
 function Get-WingetVersion {
     param([string]$Id)
-    $result = winget list --id $Id --source winget 2>$null | Select-String $Id
+    $result = winget list --id $Id --source winget --accept-source-agreements 2>$null | Select-String $Id
     if ($result) {
         $cols = ($result.Line -split '\s{2,}') | Where-Object { $_ -ne '' }
         if ($cols.Count -ge 3) { return $cols[2] }
@@ -143,7 +143,7 @@ function Get-WingetVersion {
 function Install-Python {
     Write-Host "`n[INFO]  Checking Python Install Manager (MS Store)..." -ForegroundColor Green
 
-    $existing = winget list --id 9NQ7512CXL7T --source msstore 2>$null | Select-String "9NQ7512CXL7T"
+    $existing = winget list --id 9NQ7512CXL7T --source msstore --accept-source-agreements 2>$null | Select-String "9NQ7512CXL7T"
     if ($existing) {
         $ver = (& py --version 2>&1) -replace 'Python ', ''
         Write-Host "[SKIP]  → Python already installed ($ver)" -ForegroundColor Yellow
