@@ -1,6 +1,7 @@
 <#
 .SYNOPSIS
     Bootstrap a minimal Python development environment on a clean Windows 11 machine.
+    Run via: iwr <url> -OutFile setup.ps1 -UseBasicParsing; powershell -ExecutionPolicy Bypass -File setup.ps1
 
 .DESCRIPTION
     Installs Python (MS Store), upgrades pip, installs uv, installs Git, and optionally
