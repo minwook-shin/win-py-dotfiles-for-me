@@ -229,7 +229,7 @@ function Install-Git {
 function Install-VSCode {
     if (-not $InstallVSCode) {
         Write-Host "`n[WARN]  ! VS Code skipped (use -InstallVSCode to enable)" -ForegroundColor DarkYellow
-        Add-Summary "VS Code" "—" "Skipped (flag off)"
+        Add-Summary "VS Code" "-" "Skipped (flag off)"
         return
     }
 
@@ -262,7 +262,7 @@ function Install-VSCode {
 function Install-AwsCli {
     if (-not $InstallAwsCli) {
         Write-Host "`n[WARN]  ! AWS CLI skipped (use -InstallAwsCli to enable)" -ForegroundColor DarkYellow
-        Add-Summary "AWS CLI" "—" "Skipped (flag off)"
+        Add-Summary "AWS CLI" "-" "Skipped (flag off)"
         return
     }
 
@@ -292,7 +292,7 @@ function Install-AwsCli {
         Write-Host "        aws configure" -ForegroundColor Cyan
     } catch {
         Write-Host "[ERROR] ✘ AWS CLI install failed: $_" -ForegroundColor Red
-        Add-Summary "AWS CLI" "—" "Failed"
+        Add-Summary "AWS CLI" "-" "Failed"
     }
 }
 
@@ -317,7 +317,7 @@ function Install-ClaudeCodeExtension {
         Add-Summary "Claude Code (ext)" "latest" "Installed"
     } else {
         Write-Host "[SKIP]  → Claude Code extension skipped" -ForegroundColor Yellow
-        Add-Summary "Claude Code (ext)" "—" "Skipped"
+        Add-Summary "Claude Code (ext)" "-" "Skipped"
     }
 }
 
