@@ -23,18 +23,29 @@ The script is **idempotent** — safe to re-run on an already configured machine
 
 ## Quick start
 
-### 1. Clone this repo
+**No Git required.** PowerShell's built-in `Invoke-RestMethod` (`irm`) downloads the script directly.
 
-Open **PowerShell as Administrator** and run:
+### 1. Download and run
+
+Open **PowerShell** (Win+X → "Terminal") and paste this one-liner:
 
 ```powershell
-git clone https://github.com/minwook-shin/win-py-dotfiles-for-me.git
-cd win-py-dotfiles-for-me
+irm https://raw.githubusercontent.com/minwook-shin/win-py-dotfiles-for-me/main/setup.ps1 -OutFile "$env:TEMP\setup.ps1"; powershell -ExecutionPolicy Bypass -File "$env:TEMP\setup.ps1"
 ```
 
-> If Git is not yet installed, download and run the installer from <https://git-scm.com/download/win>, then open a new PowerShell window.
+The script will self-elevate to Administrator if needed, then install Git (and everything else) for you.
 
-### 2. Edit `git-config.env`
+### 1-b. Or download first, edit config, then run
+
+If you want to set your Git identity before running:
+
+```powershell
+# Download script and config template
+irm https://raw.githubusercontent.com/minwook-shin/win-py-dotfiles-for-me/main/setup.ps1    -OutFile setup.ps1
+irm https://raw.githubusercontent.com/minwook-shin/win-py-dotfiles-for-me/main/git-config.env -OutFile git-config.env
+```
+
+Edit `git-config.env`:
 
 ```env
 GIT_NAME=Jane Smith
@@ -44,16 +55,11 @@ INSTALL_VSCODE=false
 INSTALL_AWS_CLI=false
 ```
 
-Set `INSTALL_VSCODE=true` if you want VS Code installed automatically.
-
-### 3. Run the script
+Then run:
 
 ```powershell
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-.\setup.ps1
+powershell -ExecutionPolicy Bypass -File .\setup.ps1
 ```
-
-The script will self-elevate to Administrator if needed.
 
 ---
 
