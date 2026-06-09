@@ -38,11 +38,15 @@ param(
     [string]$PythonVersion = "3.13",
     [switch]$InstallVSCode,
     [switch]$InstallAwsCli,
-    [string]$EnvFile = (Join-Path $PSScriptRoot "git-config.env")
+    [string]$EnvFile = ""
 )
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
+
+if (-not $EnvFile) {
+    $EnvFile = if ($PSScriptRoot) { Join-Path $PSScriptRoot "git-config.env" } else { "git-config.env" }
+}
 
 # ---------------------------------------------------------------------------
 # Elevation check
