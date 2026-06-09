@@ -146,7 +146,7 @@ function Install-Python {
     $existing = winget list --id 9NQ7512CXL7T --source msstore --accept-source-agreements 2>$null | Select-String "9NQ7512CXL7T"
     if ($existing) {
         $ver = (& py --version 2>&1) -replace 'Python ', ''
-        Write-Host "[SKIP]  → Python already installed ($ver)" -ForegroundColor Yellow
+        Write-Host "[SKIP]  -> Python already installed ($ver)" -ForegroundColor Yellow
         Add-Summary "Python" $ver "Skipped"
         return
     }
@@ -156,7 +156,7 @@ function Install-Python {
     Refresh-Path
 
     $ver = (& py --version 2>&1) -replace 'Python ', ''
-    Write-Host "[INFO]  ✔ Python installed ($ver)" -ForegroundColor Green
+    Write-Host "[INFO]  OK Python installed ($ver)" -ForegroundColor Green
     Add-Summary "Python" $ver "Installed"
 }
 
@@ -167,7 +167,7 @@ function Update-Pip {
     Write-Host "`n[INFO]  Upgrading pip..." -ForegroundColor Green
     & py -m pip install --upgrade pip --quiet
     $ver = (& py -m pip --version 2>&1) -replace '^pip ([^\s]+).*', '$1'
-    Write-Host "[INFO]  ✔ pip upgraded ($ver)" -ForegroundColor Green
+    Write-Host "[INFO]  OK pip upgraded ($ver)" -ForegroundColor Green
     Add-Summary "pip" $ver "Updated"
 }
 
@@ -180,7 +180,7 @@ function Install-Uv {
     $uvCmd = Get-Command uv -ErrorAction SilentlyContinue
     if ($uvCmd) {
         $ver = (& uv --version 2>&1) -replace '^uv ', ''
-        Write-Host "[SKIP]  → uv already installed ($ver)" -ForegroundColor Yellow
+        Write-Host "[SKIP]  -> uv already installed ($ver)" -ForegroundColor Yellow
         Add-Summary "uv" $ver "Skipped"
         return
     }
@@ -188,7 +188,7 @@ function Install-Uv {
     & py -m pip install uv --quiet
     Refresh-Path
     $ver = (& uv --version 2>&1) -replace '^uv ', ''
-    Write-Host "[INFO]  ✔ uv installed ($ver)" -ForegroundColor Green
+    Write-Host "[INFO]  OK uv installed ($ver)" -ForegroundColor Green
     Add-Summary "uv" $ver "Installed"
 }
 
@@ -200,14 +200,14 @@ function Install-Git {
 
     $existingVer = Get-WingetVersion "Git.Git"
     if ($existingVer) {
-        Write-Host "[SKIP]  → Git already installed ($existingVer)" -ForegroundColor Yellow
+        Write-Host "[SKIP]  -> Git already installed ($existingVer)" -ForegroundColor Yellow
         Add-Summary "Git" $existingVer "Skipped"
     } else {
         Write-Host "[INFO]  Installing Git via winget..." -ForegroundColor Green
         winget install --id Git.Git --source winget --accept-package-agreements --accept-source-agreements
         Refresh-Path
         $existingVer = (& git --version 2>&1) -replace 'git version ', ''
-        Write-Host "[INFO]  ✔ Git installed ($existingVer)" -ForegroundColor Green
+        Write-Host "[INFO]  OK Git installed ($existingVer)" -ForegroundColor Green
         Add-Summary "Git" $existingVer "Installed"
     }
 
@@ -215,7 +215,7 @@ function Install-Git {
     if ($GitName -and $GitEmail) {
         git config --global user.name  $GitName
         git config --global user.email $GitEmail
-        Write-Host "[INFO]  ✔ Git global config set ($GitName / $GitEmail)" -ForegroundColor Green
+        Write-Host "[INFO]  OK Git global config set ($GitName / $GitEmail)" -ForegroundColor Green
     } else {
         Write-Host "[WARN]  ! Git global config skipped — no name/email provided." -ForegroundColor DarkYellow
         Write-Host "        Run: git config --global user.name `"Your Name`"" -ForegroundColor DarkYellow
@@ -237,14 +237,14 @@ function Install-VSCode {
 
     $existingVer = Get-WingetVersion "Microsoft.VisualStudioCode"
     if ($existingVer) {
-        Write-Host "[SKIP]  → VS Code already installed ($existingVer)" -ForegroundColor Yellow
+        Write-Host "[SKIP]  -> VS Code already installed ($existingVer)" -ForegroundColor Yellow
         Add-Summary "VS Code" $existingVer "Skipped"
     } else {
         Write-Host "[INFO]  Installing VS Code via winget..." -ForegroundColor Green
         winget install --id Microsoft.VisualStudioCode --source winget --accept-package-agreements --accept-source-agreements
         Refresh-Path
         $existingVer = (& code --version 2>&1 | Select-Object -First 1)
-        Write-Host "[INFO]  ✔ VS Code installed ($existingVer)" -ForegroundColor Green
+        Write-Host "[INFO]  OK VS Code installed ($existingVer)" -ForegroundColor Green
         Add-Summary "VS Code" $existingVer "Installed"
     }
 
@@ -253,7 +253,7 @@ function Install-VSCode {
         Write-Host "[INFO]  Installing extension: $ext" -ForegroundColor Green
         try { & code --install-extension $ext --force 2>&1 | Out-Null } catch {}
     }
-    Write-Host "[INFO]  ✔ VS Code extensions installed" -ForegroundColor Green
+    Write-Host "[INFO]  OK VS Code extensions installed" -ForegroundColor Green
 }
 
 # ---------------------------------------------------------------------------
@@ -271,7 +271,7 @@ function Install-AwsCli {
     $awsCmd = Get-Command aws -ErrorAction SilentlyContinue
     if ($awsCmd) {
         $ver = (& aws --version 2>&1) -replace '^aws-cli/([^\s]+).*', '$1'
-        Write-Host "[SKIP]  → AWS CLI already installed ($ver)" -ForegroundColor Yellow
+        Write-Host "[SKIP]  -> AWS CLI already installed ($ver)" -ForegroundColor Yellow
         Add-Summary "AWS CLI" $ver "Skipped"
         return
     }
@@ -285,13 +285,13 @@ function Install-AwsCli {
         Remove-Item $msiPath -Force
         Refresh-Path
         $ver = (& aws --version 2>&1) -replace '^aws-cli/([^\s]+).*', '$1'
-        Write-Host "[INFO]  ✔ AWS CLI installed ($ver)" -ForegroundColor Green
+        Write-Host "[INFO]  OK AWS CLI installed ($ver)" -ForegroundColor Green
         Add-Summary "AWS CLI" $ver "Installed"
 
         Write-Host "`n[INFO]  To configure AWS credentials, run:" -ForegroundColor Green
         Write-Host "        aws configure" -ForegroundColor Cyan
     } catch {
-        Write-Host "[ERROR] ✘ AWS CLI install failed: $_" -ForegroundColor Red
+        Write-Host "[ERROR] FAIL AWS CLI install failed: $_" -ForegroundColor Red
         Add-Summary "AWS CLI" "-" "Failed"
     }
 }
@@ -313,10 +313,10 @@ function Install-ClaudeCodeExtension {
     if ($answer -match '^[Yy]$') {
         Write-Host "[INFO]  Installing Claude Code extension..." -ForegroundColor Green
         try { & code --install-extension anthropic.claude-code --force 2>&1 | Out-Null } catch {}
-        Write-Host "[INFO]  ✔ Claude Code extension installed" -ForegroundColor Green
+        Write-Host "[INFO]  OK Claude Code extension installed" -ForegroundColor Green
         Add-Summary "Claude Code (ext)" "latest" "Installed"
     } else {
-        Write-Host "[SKIP]  → Claude Code extension skipped" -ForegroundColor Yellow
+        Write-Host "[SKIP]  -> Claude Code extension skipped" -ForegroundColor Yellow
         Add-Summary "Claude Code (ext)" "-" "Skipped"
     }
 }
