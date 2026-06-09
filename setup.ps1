@@ -69,6 +69,8 @@ function Add-Summary {
 # ---------------------------------------------------------------------------
 # Env file loading (params take precedence)
 # ---------------------------------------------------------------------------
+$knownPlaceholders = @("Your Name", "Jane Smith", "")
+
 if (Test-Path $EnvFile) {
     Write-Host "[INFO]  Reading env file: $EnvFile" -ForegroundColor Green
     foreach ($line in Get-Content $EnvFile) {
@@ -84,6 +86,20 @@ if (Test-Path $EnvFile) {
             "INSTALL_AWS_CLI"{ if (-not $InstallAwsCli -and $value -eq "true") { $InstallAwsCli = $true } }
         }
     }
+}
+
+# ---------------------------------------------------------------------------
+# Interactive Git identity prompt (when not provided or still a placeholder)
+# ---------------------------------------------------------------------------
+if (-not $GitName -or $knownPlaceholders -contains $GitName) {
+    Write-Host "`nEnter your Git identity (used for git config --global)." -ForegroundColor Cyan
+    $input = Read-Host "  Full name (leave blank to skip)"
+    $GitName = $input.Trim()
+}
+
+if ($GitName -and (-not $GitEmail -or $GitEmail -match '@example\.com$' -or $GitEmail -eq "")) {
+    $input = Read-Host "  Email address (leave blank to skip)"
+    $GitEmail = $input.Trim()
 }
 
 # ---------------------------------------------------------------------------
