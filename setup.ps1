@@ -251,7 +251,7 @@ function Install-VSCode {
     # Extensions
     foreach ($ext in @("ms-python.python", "ms-python.pylance")) {
         Write-Host "[INFO]  Installing extension: $ext" -ForegroundColor Green
-        cmd /c "code --install-extension $ext --force" 2>$null | Out-Null
+        try { & code --install-extension $ext --force 2>&1 | Out-Null } catch {}
     }
     Write-Host "[INFO]  ✔ VS Code extensions installed" -ForegroundColor Green
 }
@@ -312,7 +312,7 @@ function Install-ClaudeCodeExtension {
 
     if ($answer -match '^[Yy]$') {
         Write-Host "[INFO]  Installing Claude Code extension..." -ForegroundColor Green
-        cmd /c "code --install-extension anthropic.claude-code --force" 2>$null | Out-Null
+        try { & code --install-extension anthropic.claude-code --force 2>&1 | Out-Null } catch {}
         Write-Host "[INFO]  ✔ Claude Code extension installed" -ForegroundColor Green
         Add-Summary "Claude Code (ext)" "latest" "Installed"
     } else {
