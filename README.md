@@ -27,10 +27,16 @@ The script is **idempotent** — safe to re-run on an already configured machine
 
 ### 1. Download and run
 
-Open **PowerShell** (Win+X → "Terminal") and paste this one-liner:
+Open **PowerShell** (Win+X → "Terminal") and paste one of the following:
 
+**Python + Git only (minimal):**
 ```powershell
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; iwr https://raw.githubusercontent.com/minwook-shin/win-py-dotfiles-for-me/main/setup.ps1 -OutFile "$env:TEMP\setup-py.ps1" -UseBasicParsing; powershell -ExecutionPolicy Bypass -File "$env:TEMP\setup-py.ps1"
+```
+
+**Python + Git + VS Code + AWS CLI (full):**
+```powershell
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; iwr https://raw.githubusercontent.com/minwook-shin/win-py-dotfiles-for-me/main/setup.ps1 -OutFile "$env:TEMP\setup-py.ps1" -UseBasicParsing; powershell -ExecutionPolicy Bypass -File "$env:TEMP\setup-py.ps1" -InstallVSCode -InstallAwsCli
 ```
 
 The script will self-elevate to Administrator if needed, then install Git (and everything else) for you.
