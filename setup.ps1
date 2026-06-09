@@ -264,6 +264,31 @@ function Install-AwsCli {
 }
 
 # ---------------------------------------------------------------------------
+# Step 7 — Claude Code VS Code extension (interactive prompt)
+# ---------------------------------------------------------------------------
+function Install-ClaudeCodeExtension {
+    $codeCmd = Get-Command code -ErrorAction SilentlyContinue
+    if (-not $codeCmd) {
+        # VS Code not installed — nothing to do
+        return
+    }
+
+    Write-Host "`n[INFO]  Claude Code is an AI coding assistant for VS Code." -ForegroundColor Green
+    Write-Host "        Extension: anthropic.claude-code" -ForegroundColor Cyan
+    $answer = Read-Host "        Install Claude Code extension? [y/N]"
+
+    if ($answer -match '^[Yy]$') {
+        Write-Host "[INFO]  Installing Claude Code extension..." -ForegroundColor Green
+        & code --install-extension anthropic.claude-code --force 2>&1 | Out-Null
+        Write-Host "[INFO]  ✔ Claude Code extension installed" -ForegroundColor Green
+        Add-Summary "Claude Code (ext)" "latest" "Installed"
+    } else {
+        Write-Host "[SKIP]  → Claude Code extension skipped" -ForegroundColor Yellow
+        Add-Summary "Claude Code (ext)" "—" "Skipped"
+    }
+}
+
+# ---------------------------------------------------------------------------
 # Summary table
 # ---------------------------------------------------------------------------
 function Show-Summary {
@@ -282,4 +307,5 @@ Install-Uv
 Install-Git
 Install-VSCode
 Install-AwsCli
+Install-ClaudeCodeExtension
 Show-Summary
