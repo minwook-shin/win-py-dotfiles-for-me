@@ -50,9 +50,21 @@ $ErrorActionPreference = "Stop"
 $currentPrincipal = [Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()
 if (-not $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
     Write-Host "[WARN]  ! Script is not running as Administrator. Re-launching elevated..." -ForegroundColor DarkYellow
-    Start-Process -FilePath "pwsh.exe" `
-        -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`" $($MyInvocation.BoundParameters.GetEnumerator() | ForEach-Object { "-$($_.Key) `"$($_.Value)`"" })" `
-        -Verb RunAs
+    $argList = [System.Collections.Generic.List[string]]::new()
+    $argList.Add("-NoProfile")
+    $argList.Add("-ExecutionPolicy")
+    $argList.Add("Bypass")
+    $argList.Add("-File")
+    $argList.Add("`"$PSCommandPath`"")
+    foreach ($kv in $MyInvocation.BoundParameters.GetEnumerator()) {
+        if ($kv.Value -is [switch]) {
+            if ($kv.Value) { $argList.Add("-$($kv.Key)") }
+        } else {
+            $argList.Add("-$($kv.Key)")
+            $argList.Add("`"$($kv.Value)`"")
+        }
+    }
+    Start-Process -FilePath "powershell.exe" -ArgumentList ($argList -join " ") -Verb RunAs
     exit
 }
 
