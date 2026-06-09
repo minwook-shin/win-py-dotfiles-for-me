@@ -30,7 +30,7 @@ The script is **idempotent** — safe to re-run on an already configured machine
 Open **PowerShell** (Win+X → "Terminal") and paste this one-liner:
 
 ```powershell
-irm https://raw.githubusercontent.com/minwook-shin/win-py-dotfiles-for-me/main/setup.ps1 -OutFile "$env:TEMP\setup.ps1"; powershell -ExecutionPolicy Bypass -File "$env:TEMP\setup.ps1"
+iwr https://raw.githubusercontent.com/minwook-shin/win-py-dotfiles-for-me/main/setup.ps1 -OutFile "$env:TEMP\setup.ps1"; powershell -ExecutionPolicy Bypass -File "$env:TEMP\setup.ps1"
 ```
 
 The script will self-elevate to Administrator if needed, then install Git (and everything else) for you.
@@ -41,8 +41,8 @@ If you want to set your Git identity before running:
 
 ```powershell
 # Download script and config template
-irm https://raw.githubusercontent.com/minwook-shin/win-py-dotfiles-for-me/main/setup.ps1    -OutFile setup.ps1
-irm https://raw.githubusercontent.com/minwook-shin/win-py-dotfiles-for-me/main/git-config.env -OutFile git-config.env
+iwr https://raw.githubusercontent.com/minwook-shin/win-py-dotfiles-for-me/main/setup.ps1    -OutFile setup.ps1
+iwr https://raw.githubusercontent.com/minwook-shin/win-py-dotfiles-for-me/main/git-config.env -OutFile git-config.env
 ```
 
 Edit `git-config.env`:
